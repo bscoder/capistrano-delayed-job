@@ -6,12 +6,11 @@ module Capistrano
 
       def delayed_job_command(*args)
         "cd #{current_path} && " <<
-            SSHKit::Command.new("HOME=/home/#{deploy_user}",
+            SSHKit::Command.new(:bundle, :exec, :env,
+                                "HOME=/home/#{deploy_user}",
                                 "RAILS_ENV=#{fetch(:rails_env)}",
                                 :nice,
                                 '-n 15',
-                                :bundle,
-                                :exec,
                                 delayed_job_script_relative_path,
                                 args).to_command
       end
